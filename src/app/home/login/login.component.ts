@@ -1,5 +1,6 @@
 import { AuthenticationService } from './../../authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  constructor(private authService: AuthenticationService) {}
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -15,16 +19,14 @@ export class LoginComponent implements OnInit {
   password: string = '';
 
   login() {
-    this.authService.authenticate(this.username, this.password)
-      .subscribe(
-        ()=> {
-          console.log("Ok")
-        },
-        (error) =>{
-          alert("Credenciais inválidas")
-          console.log(error)
-        }
-      )
-
+    this.authService.authenticate(this.username, this.password).subscribe(
+      () => {
+        this.router.navigate(['animals']);
+      },
+      (error) => {
+        alert('Credenciais inválidas');
+        console.log(error);
+      }
+    );
   }
 }
